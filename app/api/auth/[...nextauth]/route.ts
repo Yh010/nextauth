@@ -1,14 +1,23 @@
-import { NextResponse } from "next/server";
+import NextAuth from "next-auth"
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-export function GET(req: NextResponse, arg: any) {
-    console.log(arg.params.authRoutes);
-    return NextResponse.json({
-        message:"sdgwr"
-    })
-}
+const handler = NextAuth({
+  providers: [
+    CredentialsProvider({
+        name: 'Credentials',
+        credentials: {
+          username: { label: 'email', type: 'text', placeholder: '' },
+          password: { label: 'password', type: 'password', placeholder: '' },
+        },
+        async authorize(credentials: any) {
+            //validation check here
+            return {
+                id: "user1"
+            };
+        },
+      })
+  ],
+  secret: process.env.NEXTAUTH_SECRET
+})
 
-export function POST() {
-    return NextResponse.json({
-        message:"sdssdd"
-    })
-}
+export { handler as GET, handler as POST }
