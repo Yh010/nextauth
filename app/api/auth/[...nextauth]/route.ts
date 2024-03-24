@@ -11,6 +11,18 @@ const handler = NextAuth({
         },
         async authorize(credentials: any) {
             //validation check here
+            const username = credentials.username;
+            const password = credentials.password;
+
+            const user = await prisma.findOne({
+                username,
+                password
+            });
+
+            if (user) {
+                return user;
+            }
+
             return {
                 id: "user1"
             };
